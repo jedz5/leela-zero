@@ -39,7 +39,6 @@ void FastState::init_game(int size, float komi) {
     m_komi = komi;
     m_handicap = 0;
     m_passes = 0;
-
     return;
 }
 

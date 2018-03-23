@@ -24,6 +24,8 @@
 #include <limits>
 #include <memory>
 #include <type_traits>
+#include <iostream>
+
 
 #include "FastBoard.h"
 #include "FullBoard.h"
@@ -458,13 +460,15 @@ void UCTWorker::operator()() {
         auto currstate = std::make_unique<GameState>(m_rootstate);
         auto result = m_search->play_simulation(*currstate, m_root);
         if (result.valid()) {
-            m_search->increment_playouts();
+            m_search->increment_playouts(*currstate, m_root);
         }
     } while(m_search->is_running());
 }
 
-void UCTSearch::increment_playouts() {
+void UCTSearch::increment_playouts(GameState & currstate,UCTNode* const node) {
     m_playouts++;
+	//dump_stats(currstate, *node);
+	std::cout << currstate.gamePath<<std::endl;
 }
 
 int UCTSearch::think(int color, passflag_t passflag) {
@@ -514,7 +518,7 @@ int UCTSearch::think(int color, passflag_t passflag) {
 
         auto result = play_simulation(*currstate, m_root.get());
         if (result.valid()) {
-            increment_playouts();
+            increment_playouts(*currstate, m_root.get());
         }
 
         Time elapsed;
@@ -573,7 +577,7 @@ void UCTSearch::ponder() {
         auto currstate = std::make_unique<GameState>(m_rootstate);
         auto result = play_simulation(*currstate, m_root.get());
         if (result.valid()) {
-            increment_playouts();
+            increment_playouts(*currstate, m_root.get());
         }
     } while(!Utils::input_pending() && is_running());
 

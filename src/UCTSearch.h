@@ -87,7 +87,7 @@ public:
     void ponder();
     bool is_running() const;
     bool stop_thinking(int elapsed_centis = 0, int time_for_move = 0) const;
-    void increment_playouts();
+	void increment_playouts(GameState & currstate,UCTNode* const node);
     SearchResult play_simulation(GameState& currstate, UCTNode* const node);
 
 private:

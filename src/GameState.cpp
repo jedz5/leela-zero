@@ -43,6 +43,7 @@ void GameState::init_game(int size, float komi) {
     m_timecontrol.reset_clocks();
 
     m_resigned = FastBoard::EMPTY;
+	gamePath.clear();
 }
 
 void GameState::reset_game() {
@@ -99,6 +100,7 @@ void GameState::play_move(int color, int vertex) {
     // cut off any leftover moves from navigating
     game_history.resize(m_movenum);
     game_history.emplace_back(std::make_shared<KoState>(*this));
+	gamePath.append("->").append(move_to_text(vertex));
 }
 
 bool GameState::play_textmove(const std::string& color,
